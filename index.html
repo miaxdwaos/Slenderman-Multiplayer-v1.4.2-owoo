@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -74,7 +73,6 @@
     let myId, hostConn, connections = {}, players = {}, slenderman = { x: 8.5, y: 8.5, active: false };
     let gameStarted = false, notesCollected = 0, isDead = false, maxNotes = 0;
     
-    // --- LÓGICA DE NOMBRES ---
     function getPlayerName(id) {
         if (!id) return "???";
         let short = id.substring(0, 4);
@@ -232,7 +230,7 @@
     function handleMovement() {
         if(!gameStarted || isDead) return;
         
-        // CORRECCIÓN: Rotación corregida (Izquierda/A es rotación positiva, Derecha/D negativa en este sistema)
+        // CORREGIDO: Giro Izquierda (A / Flecha Izquierda)
         if (keys['ArrowLeft'] || keys['KeyA']) {
             let oldDirX = dirX;
             dirX = dirX * Math.cos(rotSpeed) - dirY * Math.sin(rotSpeed);
@@ -241,6 +239,7 @@
             planeX = planeX * Math.cos(rotSpeed) - planeY * Math.sin(rotSpeed);
             planeY = oldPlaneX * Math.sin(rotSpeed) + planeY * Math.cos(rotSpeed);
         }
+        // CORREGIDO: Giro Derecha (D / Flecha Derecha)
         if (keys['ArrowRight'] || keys['KeyD']) {
             let oldDirX = dirX;
             dirX = dirX * Math.cos(-rotSpeed) - dirY * Math.sin(-rotSpeed);
@@ -254,8 +253,8 @@
         let targetX = posX + dirX * moveSpeed * moveX;
         let targetY = posY + dirY * moveSpeed * moveX;
         
-        if(worldMap[Math.floor(targetX)][Math.floor(posY)] !== 1) posX = targetX;
-        if(worldMap[Math.floor(posX)][Math.floor(targetY)] !== 1) posY = targetY;
+        if(worldMap[Math.floor(targetX)] && worldMap[Math.floor(targetX)][Math.floor(posY)] !== 1) posX = targetX;
+        if(worldMap[Math.floor(posX)] && worldMap[Math.floor(posX)][Math.floor(targetY)] !== 1) posY = targetY;
         
         players[myId].x = posX; players[myId].y = posY;
 
